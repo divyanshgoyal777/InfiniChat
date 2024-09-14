@@ -11,7 +11,7 @@ const TextToImage = () => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
 
-  const API_KEY = "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";
+  const API_KEY = "YOUR_API_KEY";
   const MODEL_URL =
     "https://api-inference.huggingface.co/models/XLabs-AI/flux-RealismLora";
 
