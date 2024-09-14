@@ -11,7 +11,7 @@ const VisualCreation = () => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
 
-  const UNSPLASH_ACCESS_KEY = "k7PBwQG01_95YNvW52iuvKlmhtYf1BR-IG-oldLKUEs";
+  const UNSPLASH_ACCESS_KEY = "YOUR_API_KEY";
 
   const fetchImages = async () => {
     if (!query.trim()) return;
