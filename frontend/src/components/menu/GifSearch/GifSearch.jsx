@@ -11,7 +11,7 @@ const GifSearch = () => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
 
-  const GIPHY_API_KEY = "s3WB8XTTYLNvzQFKsvhPvboTmHxwVWZe";
+  const GIPHY_API_KEY = "YOUR_API_KEY";
 
   const fetchGifs = async () => {
     if (!query.trim()) return;
