@@ -9,6 +9,7 @@ const Login = () => {
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
   const [loading, setLoading] = useState(false);
+
   const { login } = useAuth();
 
   const togglePasswordVisibility = () => {
@@ -18,6 +19,7 @@ const Login = () => {
   const handleLogin = async (e) => {
     e.preventDefault();
     setLoading(true);
+
     try {
       await login(email, password);
     } catch (error) {
@@ -32,72 +34,91 @@ const Login = () => {
   }, []);
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gradient-to-r from-blue-500 to-purple-600">
-      <div className="max-w-md w-[95vw] md:w-full bg-white shadow-lg rounded-lg p-8">
-        <div className="mb-8 text-center">
-          <img src={Logo} alt="Logo" className="mx-auto h-20 w-28 mb-4" />
-          <h2 className="text-2xl font-bold text-gray-800">Welcome Back</h2>
-          <p className="text-sm text-gray-500">Please login to your account</p>
+    <div className="min-h-screen flex items-center justify-center bg-[#eef2f7] px-4">
+      <div className="w-full max-w-md rounded-2xl border border-gray-200 bg-[#f8fafc] p-8 shadow-md">
+        <div className="text-center mb-8">
+          <img src={Logo} alt="Logo" className="mx-auto h-20 object-contain" />
+
+          <h2 className="mt-5 text-3xl font-bold text-gray-800">
+            Welcome Back
+          </h2>
+
+          <p className="mt-2 text-sm text-gray-500">
+            Login to continue to InfiniChat
+          </p>
         </div>
         <form onSubmit={handleLogin}>
-          <div className="mb-4">
-            <label className="block text-gray-700 text-sm font-semibold mb-2">
+          <div className="mb-5">
+            <label className="mb-2 block text-sm font-medium text-gray-700">
               Email
             </label>
+
             <input
-              className="w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
               type="email"
               value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              placeholder="Enter your email..."
               disabled={loading}
+              onChange={(e) => setEmail(e.target.value)}
+              placeholder="Enter your email"
+              className="w-full rounded-xl border border-gray-300 bg-white px-4 py-3 text-gray-800 placeholder-gray-400 outline-none transition duration-200 focus:border-blue-500 focus:ring-2 focus:ring-blue-100"
             />
           </div>
-          <div className="mb-6 relative">
-            <label className="block text-gray-700 text-sm font-semibold mb-2">
+
+          <div className="mb-3 relative">
+            <label className="mb-2 block text-sm font-medium text-gray-700">
               Password
             </label>
+
             <input
-              className="w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
               type={showPassword ? "text" : "password"}
               value={password}
+              disabled={loading}
               onChange={(e) => setPassword(e.target.value)}
-              placeholder="Enter your password..."
-              disabled={loading}
+              placeholder="Enter your password"
+              className="w-full rounded-xl border border-gray-300 bg-white px-4 py-3 pr-12 text-gray-800 placeholder-gray-400 outline-none transition duration-200 focus:border-blue-500 focus:ring-2 focus:ring-blue-100"
             />
-            <div className="absolute inset-y-0 right-0 top-7 pr-3 flex items-center text-sm leading-5">
-              {showPassword ? (
-                <EyeSlashIcon
-                  className="h-5 w-5 text-gray-500 cursor-pointer"
-                  onClick={togglePasswordVisibility}
-                />
-              ) : (
-                <EyeIcon
-                  className="h-5 w-5 text-gray-500 cursor-pointer"
-                  onClick={togglePasswordVisibility}
-                />
-              )}
-            </div>
-          </div>
-          <div className="flex items-center justify-between mb-6">
+
             <button
-              className={`w-full bg-gradient-to-r from-blue-500 to-purple-600 text-white font-semibold py-2 px-4 rounded-md hover:from-blue-600 hover:to-purple-700 focus:outline-none focus:ring-2 focus:ring-blue-500 ${
-                loading ? "opacity-50 cursor-not-allowed" : ""
-              }`}
-              type="submit"
-              disabled={loading}
+              type="button"
+              onClick={togglePasswordVisibility}
+              className="absolute right-4 top-[44px] text-gray-500 hover:text-gray-700"
             >
-              {loading ? "Logging in..." : "Login"}
+              {showPassword ? (
+                <EyeSlashIcon className="h-5 w-5" />
+              ) : (
+                <EyeIcon className="h-5 w-5" />
+              )}
             </button>
           </div>
+
+          <div className="mb-6 text-right">
+            <a
+              href="/forgot-password"
+              className="text-sm text-blue-600 hover:text-blue-700"
+            >
+              Forgot Password?
+            </a>
+          </div>
+
+          <button
+            type="submit"
+            disabled={loading}
+            className={`w-full rounded-xl py-3 font-semibold text-white transition duration-200 ${
+              loading
+                ? "cursor-not-allowed bg-gray-400"
+                : "bg-[#2563eb] hover:bg-[#1d4ed8]"
+            }`}
+          >
+            {loading ? "Logging in..." : "Login"}
+          </button>
         </form>
-        <p className="text-center text-gray-600">
+
+        <p className="mt-6 text-center text-sm text-gray-500">
           Don’t have an account?{" "}
           <a
             href="/signup"
-            className="text-blue-600 hover:text-blue-700 font-semibold"
+            className="font-medium text-blue-600 hover:text-blue-700"
           >
-            Sign up
+            Sign Up
           </a>
         </p>
       </div>

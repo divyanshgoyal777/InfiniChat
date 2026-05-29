@@ -7,14 +7,14 @@
 - **AI-Powered Chat**: Engage in conversations with AI using Gemini APIs.
 - **Image Search**: Search for images with ease using the Unsplash API.
 - **GIF Search**: Find the perfect GIFs using the Giphy API.
-- **Text-to-Image**: Convert text descriptions into images with Hugging Face models.
+- **Text-to-Image**: Convert text descriptions into images with Cloudflare Workers AI and FLUX models.
 - **Ask Questions**: Get answers to your questions with integrated AI services.
 - **Authentication**: Secure user registration and login system with JWT.
 - **Responsive Design**: Tailored for a seamless experience on all devices.
 
 ## Live Preview
 
-You can view the live preview [here](https://infinichat.netlify.app).
+You can view the live preview [here](https://infinichats.netlify.app).
 
 ## Technologies Used
 
@@ -45,5 +45,5 @@ You can view the live preview [here](https://infinichat.netlify.app).
 - **Gemini API**: For AI chat and conversations.
 - **Unsplash API**: For searching images.
 - **Giphy API**: For searching GIFs.
-- **Hugging Face**: Text-to-image generation using XLabs-AI/flux-RealismLora model.
+- **Cloudflare Worker AI**: Text-to-image generation using FLUX Schnell Model.
 - **Google Generative AI**: For additional AI capabilities.

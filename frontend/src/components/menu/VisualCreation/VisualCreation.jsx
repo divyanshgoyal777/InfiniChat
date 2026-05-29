@@ -2,7 +2,6 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { FaSearch, FaDownload } from "react-icons/fa";
 import Navbar from "../../layout/Navbar/Navbar";
-import Footer from "../../layout/Footer/Footer";
 import { toast } from "react-hot-toast";
 
 const VisualCreation = () => {
@@ -10,29 +9,40 @@ const VisualCreation = () => {
   const [query, setQuery] = useState("nature");
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
-
-  const UNSPLASH_ACCESS_KEY = "k7PBwQG01_95YNvW52iuvKlmhtYf1BR-IG-oldLKUEs";
+  const UNSPLASH_ACCESS_KEY = import.meta.env
+    .VITE_INFINICHAT_UNSPLASH_ACCESS_KEY;
 
   const fetchImages = async () => {
-    if (!query.trim()) return;
+    if (!query.trim()) {
+      toast.error("Please enter a search query.");
+      return;
+    }
 
     setLoading(true);
     setError(null);
+
     try {
       const response = await axios.get(
-        `https://api.unsplash.com/search/photos`,
+        "https://api.unsplash.com/search/photos",
         {
-          params: { query, per_page: 15 },
+          params: {
+            query,
+            per_page: 20,
+          },
           headers: {
             Authorization: `Client-ID ${UNSPLASH_ACCESS_KEY}`,
           },
-        }
+        },
       );
+
       setImages(response.data.results);
+
       toast.success("Images fetched successfully!");
     } catch (error) {
-      console.error("Error fetching images:", error);
+      console.error(error);
+
       setError("Failed to fetch images. Please try again.");
+
       toast.error("Failed to fetch images.");
     } finally {
       setLoading(false);
@@ -40,75 +50,136 @@ const VisualCreation = () => {
   };
 
   useEffect(() => {
-    fetchImages();
-  }, [query]);
+    document.title = "Visual Creation - InfiniChat";
+  }, []);
 
   useEffect(() => {
-    document.title = "Visual Creation - InfiniChat";
+    fetchImages();
   }, []);
 
   return (
     <>
       <Navbar />
-      <main className="min-h-screen bg-gradient-to-b from-gray-800 via-gray-900 to-black text-white p-6 flex flex-col">
-        <h1 className="text-4xl font-extrabold mb-6 mt-20 text-center text-yellow-400">
-          Image Gallery
-        </h1>
-        <div className="mb-6 flex justify-center items-center gap-2">
-          <input
-            type="text"
-            value={query}
-            onChange={(e) => setQuery(e.target.value)}
-            placeholder="Search for images"
-            className="p-3 border border-gray-700 rounded-l-lg bg-gray-800 text-white placeholder-gray-400 w-full max-w-md"
-            aria-label="Search for images"
-          />
-          <button
-            onClick={fetchImages}
-            className="p-3 bg-yellow-500 text-gray-900 rounded-r-lg border border-yellow-600 hover:bg-yellow-600 transition-colors flex items-center gap-2"
-            aria-label="Search"
-          >
-            <FaSearch />
-            Search
-          </button>
-        </div>
-        {loading && <p className="text-center text-gray-400">Loading...</p>}
-        {error && <p className="text-center text-red-500">{error}</p>}
-        <div className="flex-1 overflow-y-auto">
-          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
-            {images.length > 0 ? (
-              images.map((image) => (
-                <div key={image.id} className="relative group">
-                  <img
-                    src={image.urls.regular}
-                    alt={image.alt_description || "Image"}
-                    className="w-full h-64 object-cover rounded-lg shadow-lg"
-                  />
-                  <div className="absolute inset-0 flex flex-col justify-end p-4 bg-black bg-opacity-50 opacity-0 group-hover:opacity-100 transition-opacity">
-                    <p className="text-white text-sm mb-2">
-                      {image.alt_description || "No description"}
-                    </p>
-                    <a
-                      href={image.urls.full}
-                      download
-                      className="flex items-center gap-2 bg-yellow-500 text-gray-900 px-4 py-2 rounded-lg text-sm hover:bg-yellow-600 transition-colors"
-                      aria-label={`Download ${
-                        image.alt_description || "image"
-                      }`}
-                    >
-                      <FaDownload />
-                      Download
-                    </a>
+
+      <div className="min-h-screen bg-[#f5f7fb] pt-24">
+        <div className="mx-auto max-w-7xl px-4 pb-12 sm:px-6 lg:px-8">
+          <div className="mb-8 rounded-2xl border border-gray-200 bg-white px-6 py-6 shadow-sm">
+            <h1 className="text-3xl font-bold text-gray-900">
+              Visual Creations
+            </h1>
+
+            <p className="mt-2 text-sm text-gray-500">
+              Discover high-quality visuals and search images instantly.
+            </p>
+
+            <div className="mt-6 flex flex-col gap-3 sm:flex-row">
+              <div className="relative flex-1">
+                <input
+                  type="text"
+                  value={query}
+                  placeholder="Search for images..."
+                  onChange={(e) => setQuery(e.target.value)}
+                  onKeyDown={(e) => e.key === "Enter" && fetchImages()}
+                  className="w-full rounded-xl border border-gray-300 bg-gray-50 py-3 pl-12 pr-4 text-sm text-gray-800 outline-none transition duration-200 placeholder:text-gray-400 focus:border-blue-500 focus:bg-white"
+                />
+
+                <FaSearch className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400" />
+              </div>
+
+              <button
+                onClick={fetchImages}
+                disabled={loading}
+                className={`rounded-xl px-6 py-3 text-sm font-medium text-white transition duration-200 ${
+                  loading
+                    ? "cursor-not-allowed bg-gray-400"
+                    : "bg-blue-600 hover:bg-blue-700"
+                }`}
+              >
+                {loading ? "Searching..." : "Search"}
+              </button>
+            </div>
+          </div>
+
+          {error && (
+            <div className="mb-6 rounded-xl border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-600">
+              {error}
+            </div>
+          )}
+
+          {loading ? (
+            <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
+              {[...Array(8)].map((_, index) => (
+                <div
+                  key={index}
+                  className="overflow-hidden rounded-2xl border border-gray-200 bg-white shadow-sm"
+                >
+                  <div className="h-64 animate-pulse bg-gray-200"></div>
+
+                  <div className="p-4">
+                    <div className="h-4 w-3/4 animate-pulse rounded bg-gray-200"></div>
+
+                    <div className="mt-3 h-10 animate-pulse rounded-xl bg-gray-200"></div>
                   </div>
                 </div>
-              ))
-            ) : (
-              <p className="text-center text-gray-400">No images found</p>
-            )}
-          </div>
+              ))}
+            </div>
+          ) : (
+            <>
+              {images.length === 0 ? (
+                <div className="rounded-2xl border border-gray-200 bg-white px-6 py-16 text-center shadow-sm">
+                  <h2 className="text-xl font-semibold text-gray-800">
+                    No Images Found
+                  </h2>
+
+                  <p className="mt-2 text-sm text-gray-500">
+                    Try searching with different keywords.
+                  </p>
+                </div>
+              ) : (
+                <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
+                  {images.map((image) => (
+                    <div
+                      key={image.id}
+                      className="group overflow-hidden rounded-2xl border border-gray-200 bg-white shadow-sm transition duration-300 hover:-translate-y-1 hover:shadow-lg"
+                    >
+                      <div className="relative overflow-hidden">
+                        <img
+                          src={image.urls.regular}
+                          alt={image.alt_description || "Unsplash"}
+                          className="h-64 w-full object-cover transition duration-500 group-hover:scale-105"
+                        />
+                      </div>
+
+                      <div className="p-4">
+                        <p className="line-clamp-2 min-h-[48px] text-sm leading-6 text-gray-600">
+                          {image.alt_description ||
+                            "Beautiful high-quality image from Unsplash."}
+                        </p>
+
+                        <div className="mt-4 flex items-center justify-between">
+                          <span className="text-xs text-gray-400">
+                            Unsplash
+                          </span>
+
+                          <a
+                            href={image.urls.full}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="inline-flex items-center gap-2 rounded-lg bg-blue-600 px-4 py-2 text-sm font-medium text-white transition duration-200 hover:bg-blue-700"
+                          >
+                            <FaDownload className="text-xs" />
+                            Download
+                          </a>
+                        </div>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              )}
+            </>
+          )}
         </div>
-      </main>
-      <Footer />
+      </div>
     </>
   );
 };

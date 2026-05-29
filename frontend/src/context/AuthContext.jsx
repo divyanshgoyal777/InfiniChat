@@ -19,7 +19,7 @@ export const AuthProvider = ({ children }) => {
 
   useEffect(() => {
     const axiosInstance = axios.create({
-      baseURL: "http://localhost:3000/api",
+      baseURL: `${import.meta.env.VITE_INFINICHAT_BACKEND_URL}/api`,
     });
 
     axiosInstance.interceptors.request.use(
@@ -42,7 +42,7 @@ export const AuthProvider = ({ children }) => {
           try {
             const refreshToken = localStorage.getItem("refreshToken");
             const res = await axios.post(
-              "http://localhost:3000/api/auth/refresh-token",
+              `${import.meta.env.VITE_INFINICHAT_BACKEND_URL}/api/auth/refresh-token`,
               { refreshToken }
             );
             const { accessToken } = res.data;
@@ -68,7 +68,7 @@ export const AuthProvider = ({ children }) => {
 
   const login = async (email, password) => {
     try {
-      const res = await axios.post("http://localhost:3000/api/auth/login", {
+      const res = await axios.post(`${import.meta.env.VITE_INFINICHAT_BACKEND_URL}/api/auth/login`, {
         email,
         password,
       });
@@ -86,7 +86,7 @@ export const AuthProvider = ({ children }) => {
 
   const signup = async (fullName, email, password) => {
     try {
-      await axios.post("http://localhost:3000/api/auth/signup", {
+      await axios.post(`${import.meta.env.VITE_INFINICHAT_BACKEND_URL}/api/auth/signup`, {
         fullName,
         email,
         password,
@@ -100,7 +100,7 @@ export const AuthProvider = ({ children }) => {
 
   const logout = async () => {
     try {
-      await axios.post("http://localhost:3000/api/auth/logout");
+      await axios.post(`${import.meta.env.VITE_INFINICHAT_BACKEND_URL}/api/auth/logout`);
       localStorage.removeItem("token");
       localStorage.removeItem("refreshToken");
       localStorage.removeItem("user");

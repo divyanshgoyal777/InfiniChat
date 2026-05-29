@@ -4,6 +4,7 @@ const cookieParser = require("cookie-parser");
 const connectDB = require("./config/db");
 const authRoutes = require("./routes/authRoutes");
 const geminiRoutes = require("./routes/geminiRoutes");
+const imageRoutes = require("./routes/imageRoutes");
 const cors = require("cors");
 require("dotenv").config();
 
@@ -17,6 +18,7 @@ connectDB();
 
 app.use("/api/auth", authRoutes);
 app.use("/api/gemini", geminiRoutes);
+app.use("/api/image", imageRoutes);
 
 app.use("/", (req, res) => res.send("Hello World"));
 

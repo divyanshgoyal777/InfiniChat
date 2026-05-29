@@ -1,9 +1,9 @@
-import React, { useState, useEffect } from "react";
+import React, { useEffect } from "react";
 import { Link } from "react-router-dom";
 import { useAuth } from "../../context/AuthContext";
 import Navbar from "../layout/Navbar/Navbar";
 import Footer from "../layout/Footer/Footer";
-import Logo from "../../assets/img/dark.png";
+import Logo from "../../assets/img/light.png";
 import {
   ChatBubbleBottomCenterTextIcon,
   PhotoIcon,
@@ -13,267 +13,207 @@ import {
 import { AiOutlineFileGif } from "react-icons/ai";
 import { motion } from "framer-motion";
 
+const features = [
+  {
+    title: "AI Conversations",
+    description:
+      "Engage with advanced AI models for coding, writing, learning, and productivity.",
+    icon: ChatBubbleBottomCenterTextIcon,
+    color: "text-blue-600",
+  },
+  {
+    title: "Visual Creations",
+    description:
+      "Generate AI-powered visuals and creative artwork from simple prompts.",
+    icon: PhotoIcon,
+    color: "text-pink-500",
+  },
+  {
+    title: "Curiosity Hub",
+    description:
+      "Ask anything and get intelligent answers instantly with AI assistance.",
+    icon: QuestionMarkCircleIcon,
+    color: "text-yellow-500",
+  },
+  {
+    title: "Text to Image",
+    description:
+      "Convert your imagination into high-quality AI-generated images.",
+    icon: DevicePhoneMobileIcon,
+    color: "text-green-500",
+  },
+  {
+    title: "GIF Search",
+    description:
+      "Discover trending and relevant GIFs instantly for your content and chats.",
+    icon: AiOutlineFileGif,
+    color: "text-purple-500",
+  },
+];
+
 const HomePage = () => {
   const { isAuthenticated } = useAuth();
-  const [showModal, setShowModal] = useState(false);
-
-  useEffect(() => {
-    const modalShown = localStorage.getItem("modalShown");
-    if (!modalShown) {
-      setShowModal(true);
-    }
-  }, []);
-
-  const handleCloseModal = () => {
-    setShowModal(false);
-    localStorage.setItem("modalShown", "true");
-  };
-
-  const handleOutsideClick = (e) => {
-    if (e.target.classList.contains("modal-background")) {
-      handleCloseModal();
-    }
-  };
 
   useEffect(() => {
     document.title = "Home - InfiniChat";
   }, []);
 
   return (
-    <div>
-      {showModal ? (
-        <motion.div
-          className="modal-background fixed inset-0 bg-gray-900 bg-opacity-75 flex items-center justify-center z-50"
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ duration: 0.5 }}
-          onClick={handleOutsideClick} 
-        >
-          <motion.div
-            className="bg-gray-800 rounded-lg shadow-lg p-6 w-full max-w-lg"
-            initial={{ scale: 0.9 }}
-            animate={{ scale: 1 }}
-            transition={{ duration: 0.5 }}
-          >
-            <h2 className="text-xl font-bold text-yellow-400 mb-4">
-              Important Notice
-            </h2>
-            <p className="text-gray-300 mb-6">
-              Please be aware that the APIs used on this site are subject to
-              updates and changes by their respective providers. As a result,
-              service availability and functionality may vary. We strive to
-              maintain the best experience but cannot guarantee continuous
-              operation at all times.
-            </p>
-            <button
-              onClick={handleCloseModal}
-              className="bg-yellow-500 text-gray-900 px-4 py-2 rounded-lg hover:bg-yellow-600 transition-colors"
-              aria-label="Close Modal"
+    <div className="min-h-screen bg-[#f5f7fb] text-gray-900">
+      <Navbar />
+
+      <section className="pt-28 pb-24">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="grid lg:grid-cols-2 gap-16 items-center">
+            <motion.div
+              initial={{ opacity: 0, y: 40 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.7 }}
             >
-              Close
-            </button>
-          </motion.div>
-        </motion.div>
-      ) : (
-        <div>
-          <Navbar />
-          <div className="bg-gray-900 text-white">
-            <section className="relative bg-gradient-to-br from-gray-800 to-gray-900 h-screen pt-20 flex items-center">
-              <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full">
-                <div className="flex flex-col lg:flex-row items-center justify-between h-full">
-                  <motion.div
-                    initial={{ opacity: 0, y: 50 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ duration: 0.75, ease: "easeOut" }} 
-                    className="text-center lg:text-left"
-                  >
-                    <h1 className="text-4xl md:text-6xl font-bold mb-4">
-                      Welcome to{" "}
-                      <span className="text-blue-500">InfiniChat</span>
-                    </h1>
-                    <p className="text-lg md:text-xl text-gray-300 mb-8">
-                      Connect with cutting-edge AI through our platform. Access
-                      powerful chat, image generation, and Q&A services powered
-                      by leading AI technologies.
-                    </p>
-                    {isAuthenticated() ? (
-                      <div className="flex flex-col gap-2 md:grid md:grid-cols-2 lg:grid-cols-4 lg:gap-4">
-                        <motion.div
-                          initial={{ scale: 1 }}
-                          whileHover={{ scale: 1.05 }}
-                          className="flex justify-center lg:justify-start"
-                        >
-                          <Link
-                            to="/ai-conversation"
-                            className="bg-blue-600 hover:bg-blue-700 text-white font-semibold py-3 px-6 rounded-md shadow-md transition duration-300 text-center w-full max-w-xs lg:w-48"
-                            aria-label="Go to AI Conversations"
-                          >
-                            AI Conversations
-                          </Link>
-                        </motion.div>
-                        <motion.div
-                          initial={{ scale: 1 }}
-                          whileHover={{ scale: 1.05 }}
-                          className="flex justify-center lg:justify-start"
-                        >
-                          <Link
-                            to="/visual-creation"
-                            className="bg-pink-600 hover:bg-pink-700 text-white font-semibold py-3 px-6 rounded-md shadow-md transition duration-300 text-center w-full max-w-xs lg:w-48"
-                            aria-label="Go to Visual Creations"
-                          >
-                            Visual Creations
-                          </Link>
-                        </motion.div>
-                        <motion.div
-                          initial={{ scale: 1 }}
-                          whileHover={{ scale: 1.05 }}
-                          className="flex justify-center lg:justify-start"
-                        >
-                          <Link
-                            to="/curiosity-hub"
-                            className="bg-yellow-600 hover:bg-yellow-700 text-white font-semibold py-3 px-6 rounded-md shadow-md transition duration-300 text-center w-full max-w-xs lg:w-48"
-                            aria-label="Go to Curiosity Hub"
-                          >
-                            Curiosity Hub
-                          </Link>
-                        </motion.div>
-                        <motion.div
-                          initial={{ scale: 1 }}
-                          whileHover={{ scale: 1.05 }}
-                          className="flex justify-center lg:justify-start"
-                        >
-                          <Link
-                            to="/texttoimage"
-                            className="bg-teal-600 hover:bg-teal-700 text-white font-semibold py-3 px-6 rounded-md shadow-md transition duration-300 text-center w-full max-w-xs lg:w-48"
-                            aria-label="Go to Text-to-Image"
-                          >
-                            Text-to-Image
-                          </Link>
-                        </motion.div>
-                        <motion.div
-                          initial={{ scale: 1 }}
-                          whileHover={{ scale: 1.05 }}
-                          className="flex justify-center lg:justify-start"
-                        >
-                          <Link
-                            to="/gifsearch"
-                            className="bg-purple-600 hover:bg-purple-700 text-white font-semibold py-3 px-6 rounded-md shadow-md transition duration-300 text-center w-full max-w-xs lg:w-48"
-                            aria-label="Go to Gif Search"
-                          >
-                            Gif Search
-                          </Link>
-                        </motion.div>
-                      </div>
-                    ) : (
-                      <Link
-                        to="/signup"
-                        className="bg-blue-600 hover:bg-blue-700 text-white font-semibold py-3 px-6 rounded-md shadow-md transition duration-300"
-                        aria-label="Sign Up"
-                      >
-                        Get Started
-                      </Link>
-                    )}
-                  </motion.div>
-                  <div className="mt-10 lg:mt-0 lg:ml-10 flex justify-center">
-                    <motion.img
-                      src={Logo}
-                      alt="InfiniChat Logo"
-                      className="w-[10rem] max-w-xs md:max-w-sm lg:max-w-md"
-                      initial={{ opacity: 0, scale: 0.8 }}
-                      animate={{ opacity: 1, scale: 1 }}
-                      transition={{ duration: 0.75, ease: "easeOut" }}
-                      loading="lazy"
-                    />
-                  </div>
-                </div>
-              </div>
-            </section>
-            <section className="py-20">
-              <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-                <h2 className="text-3xl font-bold text-center mb-12">
-                  Explore Our AI-Powered Features
-                </h2>
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-                  <motion.div
-                    className="bg-gray-800 p-6 rounded-lg shadow-lg"
-                    initial={{ opacity: 0, y: 30 }}
-                    whileInView={{ opacity: 1, y: 0 }}
-                    transition={{ duration: 0.5 }}
-                  >
-                    <ChatBubbleBottomCenterTextIcon className="h-12 w-12 text-blue-500 mb-4" />
-                    <h3 className="text-xl font-semibold mb-2">
+              <span className="inline-flex items-center rounded-full bg-blue-100 px-4 py-1 text-sm font-medium text-blue-700 mb-6">
+                AI Powered Platform
+              </span>
+
+              <h1 className="text-5xl md:text-6xl font-bold leading-tight text-gray-900">
+                Explore the Future of{" "}
+                <span className="text-blue-600">AI Interaction</span>
+              </h1>
+
+              <p className="mt-6 text-lg text-gray-600 leading-relaxed max-w-xl">
+                InfiniChat brings together AI conversations, image generation,
+                curiosity exploration, and creative tools in one seamless
+                platform.
+              </p>
+
+              <div className="mt-10 flex flex-wrap gap-4">
+                {isAuthenticated() ? (
+                  <>
+                    <Link
+                      to="/ai-conversation"
+                      className="rounded-xl border border-gray-300 bg-white px-6 py-3 text-gray-700 font-medium hover:border-blue-500 hover:bg-blue-600 hover:text-white transition duration-200"
+                    >
                       AI Conversations
-                    </h3>
-                    <p className="text-gray-400">
-                      Engage in dynamic conversations powered by cutting-edge AI
-                      technologies.
-                    </p>
-                  </motion.div>
-                  <motion.div
-                    className="bg-gray-800 p-6 rounded-lg shadow-lg"
-                    initial={{ opacity: 0, y: 30 }}
-                    whileInView={{ opacity: 1, y: 0 }}
-                    transition={{ duration: 0.5 }}
-                  >
-                    <PhotoIcon className="h-12 w-12 text-pink-500 mb-4" />
-                    <h3 className="text-xl font-semibold mb-2">
+                    </Link>
+
+                    <Link
+                      to="/visual-creation"
+                      className="rounded-xl border border-gray-300 bg-white px-6 py-3 text-gray-700 font-medium hover:border-blue-500 hover:bg-blue-600 hover:text-white transition duration-200"
+                    >
                       Visual Creations
-                    </h3>
-                    <ul className="text-gray-400">
-                      <li>Generate stunning images from text descriptions.</li>
-                      <li>Explore artistic creations in seconds.</li>
-                    </ul>
-                  </motion.div>
-                  <motion.div
-                    className="bg-gray-800 p-6 rounded-lg shadow-lg"
-                    initial={{ opacity: 0, y: 30 }}
-                    whileInView={{ opacity: 1, y: 0 }}
-                    transition={{ duration: 0.5 }}
-                  >
-                    <QuestionMarkCircleIcon className="h-12 w-12 text-yellow-500 mb-4" />
-                    <h3 className="text-xl font-semibold mb-2">
+                    </Link>
+
+                    <Link
+                      to="/curiosity-hub"
+                      className="rounded-xl border border-gray-300 bg-white px-6 py-3 text-gray-700 font-medium hover:border-blue-500 hover:bg-blue-600 hover:text-white transition duration-200"
+                    >
                       Curiosity Hub
-                    </h3>
-                    <p className="text-gray-400">
-                      Get instant answers to complex questions with our AI Q&A
-                      tool.
-                    </p>
-                  </motion.div>
-                  <motion.div
-                    className="bg-gray-800 p-6 rounded-lg shadow-lg"
-                    initial={{ opacity: 0, y: 30 }}
-                    whileInView={{ opacity: 1, y: 0 }}
-                    transition={{ duration: 0.5 }}
+                    </Link>
+
+                    <Link
+                      to="/texttoimage"
+                      className="rounded-xl border border-gray-300 bg-white px-6 py-3 text-gray-700 font-medium hover:border-blue-500 hover:bg-blue-600 hover:text-white transition duration-200"
+                    >
+                      Text to Image
+                    </Link>
+
+                    <Link
+                      to="/gifsearch"
+                      className="rounded-xl border border-gray-300 bg-white px-6 py-3 text-gray-700 font-medium hover:border-blue-500 hover:bg-blue-600 hover:text-white transition duration-200"
+                    >
+                      GIF Search
+                    </Link>
+                  </>
+                ) : (
+                  <Link
+                    to="/signup"
+                    className="rounded-xl bg-blue-600 px-6 py-3 text-white font-medium hover:bg-blue-700 transition duration-200"
                   >
-                    <DevicePhoneMobileIcon className="h-12 w-12 text-teal-500 mb-4" />
-                    <h3 className="text-xl font-semibold mb-2">
-                      Text-to-Image
-                    </h3>
-                    <ul className="text-gray-400">
-                      <li>Create AI-generated images from your input text.</li>
-                      <li>Visualize your ideas and explore AI art.</li>
-                    </ul>
-                  </motion.div>
-                  <motion.div
-                    className="bg-gray-800 p-6 rounded-lg shadow-lg"
-                    initial={{ opacity: 0, y: 30 }}
-                    whileInView={{ opacity: 1, y: 0 }}
-                    transition={{ duration: 0.5 }}
-                  >
-                    <AiOutlineFileGif className="h-12 w-12 text-purple-500 mb-4" />
-                    <h3 className="text-xl font-semibold mb-2">Gif Search</h3>
-                    <ul className="text-gray-400">
-                      <li>Search for GIFs based on your prompts.</li>
-                      <li>Ideal for accessibility and content creation.</li>
-                    </ul>
-                  </motion.div>
-                </div>
+                    Get Started
+                  </Link>
+                )}
               </div>
-            </section>
+            </motion.div>
+
+            <motion.div
+              initial={{ opacity: 0, scale: 0.95 }}
+              animate={{ opacity: 1, scale: 1 }}
+              transition={{ duration: 0.7 }}
+              className="flex justify-center"
+            >
+              <img
+                src={Logo}
+                alt="InfiniChat"
+                className="w-full max-w-md object-contain"
+                loading="lazy"
+              />
+            </motion.div>
           </div>
-          <Footer />
         </div>
+      </section>
+
+      <section className="pb-24">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="text-center mb-16">
+            <h2 className="text-4xl font-bold text-gray-900">
+              Everything You Need in One Platform
+            </h2>
+
+            <p className="mt-4 text-lg text-gray-600 max-w-2xl mx-auto">
+              Powerful AI tools designed for productivity, creativity, and
+              smarter interaction.
+            </p>
+          </div>
+
+          <div className="grid gap-8 md:grid-cols-2 lg:grid-cols-3">
+            {features.map((feature, index) => {
+              const Icon = feature.icon;
+
+              return (
+                <motion.div
+                  key={index}
+                  whileHover={{ y: -6 }}
+                  transition={{ duration: 0.2 }}
+                  className="rounded-2xl border border-gray-200 bg-white p-8 shadow-sm hover:shadow-lg transition-all duration-300"
+                >
+                  <Icon className={`h-12 w-12 mb-5 ${feature.color}`} />
+
+                  <h3 className="text-xl font-semibold mb-3 text-gray-900">
+                    {feature.title}
+                  </h3>
+
+                  <p className="text-gray-600 leading-relaxed">
+                    {feature.description}
+                  </p>
+                </motion.div>
+              );
+            })}
+          </div>
+        </div>
+      </section>
+
+      {!isAuthenticated() && (
+        <section className="pb-24">
+          <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div className="rounded-3xl bg-blue-600 px-8 py-16 text-center text-white">
+              <h2 className="text-4xl font-bold">Start Exploring AI Today</h2>
+
+              <p className="mt-4 text-lg text-blue-100 max-w-2xl mx-auto">
+                Create your account and unlock access to AI conversations,
+                creative generation tools, and more.
+              </p>
+
+              <Link
+                to="/signup"
+                className="inline-block mt-8 rounded-xl bg-white px-8 py-3 text-blue-600 font-semibold hover:bg-gray-100 transition duration-200"
+              >
+                Create Free Account
+              </Link>
+            </div>
+          </div>
+        </section>
       )}
+
+      <Footer />
     </div>
   );
 };
